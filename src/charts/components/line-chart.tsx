@@ -3,14 +3,6 @@
 import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
 
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
@@ -18,27 +10,33 @@ import {
 } from "@/components/ui/chart";
 import { useEffect, useState } from "react";
 import { ChartProps } from "../types";
-import { getProcessedData } from "../utils";
-import { IoMegaphoneSharp } from "react-icons/io5";
 import { getRandomColor } from "@/lib/utils";
 import { ShadcnChartTemplate } from "./chart-template";
+import { useGeneralStore } from "@/lib/store";
+import { SUPPORTED_CHARTS_STRATEGIES } from "../utils";
 
 const chartConfig = {} satisfies ChartConfig;
 
-export function ShadcnLineChart({
-  chartResponse,
-}: ChartProps) {
+export function ShadcnLineChart({ chartResponse }: ChartProps) {
   const [processedData, setProcessedData] = useState<any[]>([]);
+  console.log("processedData", processedData);
+  const { dataObject } = useGeneralStore();
+
   useEffect(() => {
-    if (chartResponse) {
-      setProcessedData(getProcessedData(chartResponse));
-    }
-  }, [chartResponse]);
+    const strategyFunction =
+      SUPPORTED_CHARTS_STRATEGIES[chartResponse.strategy];
+    setProcessedData(
+      strategyFunction(
+        dataObject,
+        chartResponse.labelColumn,
+        chartResponse.dataColumn
+      )
+    );
+  }, [chartResponse, dataObject]);
   return (
     <ShadcnChartTemplate
-      title={chartResponse.name}
+      title={chartResponse.title}
       description={chartResponse.description}
-      highlight={chartResponse.highlight}
     >
       <ChartContainer config={chartConfig}>
         <LineChart
@@ -50,25 +48,20 @@ export function ShadcnLineChart({
           }}
         >
           <CartesianGrid vertical={false} />
-          {processedData.length > 0 && (
-            <XAxis
-              dataKey={Object.keys(processedData[0])[0]}
-              tickLine={false}
-              tickMargin={10}
-              axisLine={false}
-              tickFormatter={(value) => value.slice(0, 3)}
-            />
-          )}
+          <XAxis
+            dataKey={chartResponse.labelColumn}
+            tickLine={false}
+            tickMargin={10}
+            axisLine={false}
+            tickFormatter={(value) => value.slice(0, 3)}
+          />
           <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-          {chartResponse.data.map((item) => (
-            <Line
-              key={item.name}
-              dataKey={item.name}
-              stroke={getRandomColor()}
-              strokeWidth={2}
-              type="monotone"
-            />
-          ))}
+          <Line
+            dataKey={chartResponse.dataColumn}
+            stroke={getRandomColor()}
+            strokeWidth={2}
+            type="monotone"
+          />
         </LineChart>
       </ChartContainer>
     </ShadcnChartTemplate>

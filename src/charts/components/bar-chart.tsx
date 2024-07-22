@@ -32,12 +32,7 @@ export function ShadcnBarChart({ chartResponse }: ChartProps) {
         chartResponse.dataColumn
       )
     );
-  }, [
-    chartResponse.dataColumn,
-    chartResponse.labelColumn,
-    chartResponse.strategy,
-    dataObject,
-  ]);
+  }, [chartResponse, dataObject]);
 
   return (
     <ShadcnChartTemplate
