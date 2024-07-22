@@ -75,3 +75,13 @@ export const csvToJson = (csv: string) => {
   }
   return result;
 };
+
+export const jsonToCsv = (json: any[]) => {
+  if (json.length === 0) return "";
+  const headers = Object.keys(json[0]);
+  const csv = [headers.join(",")];
+  for (const row of json) {
+    csv.push(headers.map((header) => row[header]).join(","));
+  }
+  return csv.join("\n");
+}

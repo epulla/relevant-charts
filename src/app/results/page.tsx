@@ -14,6 +14,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { jsonToCsv } from "@/lib/utils";
+import { MAX_RECORDS_TO_CONSIDER_FOR_AI } from "@/lib/constants";
 
 // export const metadata = {
 //   title: "Results Page",
@@ -23,17 +25,14 @@ import {
 export default function ProcessedPage() {
   const router = useRouter();
 
-  const { metricsResponse } = useMetricsStore();
-  const { chartsResponse } = useChartsStore();
+  const { metricsResponses } = useMetricsStore();
+  const { chartsResponses } = useChartsStore();
   const { aiContext, dataObject } = useGeneralStore();
   console.log("dataObject", dataObject);
   // console.log("metricsResponse", metricsResponse);
   // console.log("chartsResponse", chartsResponse);
 
-  if (
-    metricsResponse.length === 0
-    // || chartsResponse.length === 0
-  ) {
+  if (metricsResponses.length === 0 || chartsResponses.length === 0) {
     router.push("/");
     return null;
   }
@@ -49,7 +48,23 @@ export default function ProcessedPage() {
       <Accordion type="single" collapsible className="w-full">
         <AccordionItem value="item-1">
           <AccordionTrigger>Contexto:</AccordionTrigger>
-          <AccordionContent>{aiContext}</AccordionContent>
+          <AccordionContent>
+            <p>
+              Se utilizó lo siguiente para la generación de las métricas y
+              gráficos:
+            </p>
+            <br />
+            <p>{aiContext}</p>
+            <br />
+            <p>
+              Más las primeras {MAX_RECORDS_TO_CONSIDER_FOR_AI} líneas del
+              dataset:
+            </p>
+            <br />
+            <pre>
+              {jsonToCsv(dataObject.slice(0, MAX_RECORDS_TO_CONSIDER_FOR_AI))}
+            </pre>
+          </AccordionContent>
         </AccordionItem>
       </Accordion>
       <h2 className="text-2xl text-primary font-bold mt-2">
@@ -59,7 +74,7 @@ export default function ProcessedPage() {
       <div className="flex flex-col">
         <div className="flex flex-col md:flex-row">
           <div className="flex flex-col md:w-64">
-            {metricsResponse.map((metric) => (
+            {metricsResponses.map((metric) => (
               <MetricCard
                 key={metric.name}
                 unit={metric.unit}
@@ -70,19 +85,22 @@ export default function ProcessedPage() {
             ))}
           </div>
           <div className="flex-1">
-            {/* {SUPPORTED_CHARTS[chartsResponse[0].id]({
-              chartResponse: chartsResponse[0],
-            })} */}
-            {SUPPORTED_CHARTS_WITH_STRATEGIES[chartsResponse[0].id].component({
-              chartResponse: chartsResponse[0],
+            {SUPPORTED_CHARTS_WITH_STRATEGIES[chartsResponses[0].id].component({
+              chartResponse: chartsResponses[0],
             })}
           </div>
         </div>
         <div className="flex flex-col md:grid md:grid-cols-3">
-          {/* {chartsResponse.slice(1).map((chart) => {
-            const Component = SUPPORTED_CHARTS[chart.id];
-            return <Component key={chart.id} chartResponse={chart} />;
-          })} */}
+          {chartsResponses.slice(1).map((chartResponse, i) => {
+            const ChartComponent =
+              SUPPORTED_CHARTS_WITH_STRATEGIES[chartResponse.id].component;
+            return (
+              <ChartComponent
+                key={`${chartResponse.id}-${i}`}
+                chartResponse={chartResponse}
+              />
+            );
+          })}
         </div>
       </div>
     </main>

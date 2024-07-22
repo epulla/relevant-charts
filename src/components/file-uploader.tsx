@@ -80,7 +80,7 @@ export default function FileUploader() {
           }}
         >
           <IoCloudUpload className="mr-2" />
-          Choose file
+          Escoge un archivo
         </Button>
       </label>
       <input

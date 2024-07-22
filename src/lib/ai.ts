@@ -9,14 +9,14 @@ const openai = createOpenAI({
   apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
 });
 
-export const generateRelevantMetricsChartsObject = (datasetString: string) =>
+export const generateRelevantMetricsChartsObject = (datasetSample: string) =>
   generateObject({
     model: openai("gpt-4o-mini"),
     schema: z.object({
       context: z
         .string()
         .describe(
-          "Análisis corto de las columnas del dataset (nombre, tipo de dato y descripción corta) y el idioma utilizado"
+          "Descripción de las columnas del dataset (nombre, tipo de dato y descripción corta)"
         ),
       metrics: z.array(
         z.object({
@@ -87,7 +87,7 @@ export const generateRelevantMetricsChartsObject = (datasetString: string) =>
           },
           {
             type: "text",
-            text: datasetString,
+            text: datasetSample,
           },
         ],
       },
