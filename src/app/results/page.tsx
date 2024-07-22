@@ -42,18 +42,19 @@ export default function ProcessedPage() {
       <Link href={`/`}>
         <Button variant="ghost">
           <IoArrowBack />
-          Go back
+          Ir a inicio
         </Button>
       </Link>
-      <h1 className="text-sm text-primary opacity-50">Results</h1>
+      <h1 className="text-sm text-primary opacity-50">Resultados</h1>
       <Accordion type="single" collapsible className="w-full">
         <AccordionItem value="item-1">
-          <AccordionTrigger>Context:</AccordionTrigger>
+          <AccordionTrigger>Contexto:</AccordionTrigger>
           <AccordionContent>{aiContext}</AccordionContent>
         </AccordionItem>
       </Accordion>
       <h2 className="text-2xl text-primary font-bold mt-2">
-        These are your most relevant metrics and charts...
+        {/* These are your most relevant metrics and charts... */}
+        Estos son tus métricas y gráficos más relevantes...
       </h2>
       <div className="flex flex-col">
         <div className="flex flex-col md:flex-row">

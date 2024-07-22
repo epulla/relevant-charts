@@ -13,7 +13,7 @@ export default function Home() {
         <FileUploader />
         <Link href="/examples">
           <Button variant="secondary">
-            See examples
+            Ver ejemplos
             <IoArrowForward className="ml-1" />
           </Button>
         </Link>

@@ -58,7 +58,7 @@ export const generateRelevantMetricsChartsObject = (datasetString: string) =>
       ),
     }),
     mode: "json",
-    system: `Te vas a comportar como un analista de datos con una amplia experiencia en el campo de analítica de datos y gráficos estadísticos para la toma de decisiones estratégicas. Serás capaz de analizar las columnas de un dataset junto a un pequeño número de registros, el tipo de dato (númerico o texto) y las relaciones entre ellas.`,
+    system: `Te vas a comportar como un analista de datos con una amplia experiencia en el campo de analítica de datos y gráficos estadísticos para la toma de decisiones estratégicas. Serás capaz de analizar las columnas de un dataset junto a un pequeño número de registros, el tipo de dato (númerico o texto) y las relaciones entre ellas. Todas tus respuestas deberán estar en español.`,
     messages: [
       {
         role: "user",
