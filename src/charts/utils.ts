@@ -18,10 +18,10 @@ export const SUPPORTED_CHARTS_WITH_STRATEGIES: {
     component: ShadcnPieChart,
     strategies: ["mapLabelsWithData", "groupByLabelsAndCount"],
   },
-  // area: {
-  //   component: ShadcnAreaChart,
-  //   strategies: [],
-  // },
+  area: {
+    component: ShadcnAreaChart,
+    strategies: ["groupByLabelsAndAccumulate"],
+  },
   line: {
     component: ShadcnLineChart,
     strategies: ["mapLabelsWithData", "groupByLabelsAndCount"],
@@ -50,6 +50,20 @@ export const SUPPORTED_CHARTS_STRATEGIES: {
     return Object.entries(groupedData).map(([label, values]) => ({
       [labelColumn]: label,
       [dataColumn]: values?.length || 0,
+    }));
+  },
+  groupByLabelsAndAccumulate: (
+    data: any[],
+    labelColumn: string,
+    dataColumn: string
+  ) => {
+    const groupedData = Object.groupBy(
+      data,
+      ({ [labelColumn]: label }) => label
+    );
+    return Object.entries(groupedData).map(([label, values]) => ({
+      [labelColumn]: label,
+      [dataColumn]: values?.reduce((acc, item) => acc + +item[dataColumn], 0),
     }));
   },
 };
