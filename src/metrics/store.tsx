@@ -10,7 +10,7 @@ export type MetricResponse = {
 };
 
 export type State = {
-  metricsResponse: MetricResponse[];
+  metricsResponses: MetricResponse[];
 };
 
 type Actions = {
@@ -18,9 +18,9 @@ type Actions = {
 };
 
 export const useMetricsStore = create<State & Actions>((set) => ({
-  metricsResponse: [],
+  metricsResponses: [],
   setMetricsResponse: (metricsResponse: MetricResponse[]) =>
     set({
-      metricsResponse,
+      metricsResponses: metricsResponse,
     }),
 }));

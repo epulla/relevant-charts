@@ -12,7 +12,7 @@ export type ChartResponse = {
 };
 
 export type State = {
-  chartsResponse: ChartResponse[];
+  chartsResponses: ChartResponse[];
 };
 
 type Actions = {
@@ -20,6 +20,6 @@ type Actions = {
 };
 
 export const useChartsStore = create<State & Actions>((set) => ({
-  chartsResponse: [],
-  setChartsResponse: (chartsResponse: ChartResponse[]) => set({ chartsResponse }),
+  chartsResponses: [],
+  setChartsResponse: (chartsResponse: ChartResponse[]) => set({ chartsResponses: chartsResponse }),
 }));
