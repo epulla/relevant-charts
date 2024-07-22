@@ -61,7 +61,7 @@ export default function ProcessedPage() {
               dataset:
             </p>
             <br />
-            <pre>
+            <pre className="overflow-x-auto">
               {jsonToCsv(dataObject.slice(0, MAX_RECORDS_TO_CONSIDER_FOR_AI))}
             </pre>
           </AccordionContent>
