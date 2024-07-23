@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/accordion";
 import { jsonToCsv } from "@/lib/utils";
 import { MAX_RECORDS_TO_CONSIDER_FOR_AI } from "@/lib/constants";
+import { ConfirmationModal } from "@/components/confirmation-modal";
 
 // export const metadata = {
 //   title: "Results Page",
@@ -37,13 +38,19 @@ export default function ProcessedPage() {
     return null;
   }
   return (
-    <main className="flex-1 w-full mt-12">
-      <Link href={`/`}>
-        <Button variant="ghost">
-          <IoArrowBack />
-          Ir a inicio
-        </Button>
-      </Link>
+    <main className="max-w-5xl mx-auto px-2 md:px-0 flex-1 w-full mt-12">
+      <ConfirmationModal
+        title="¿Estás seguro de que deseas volver al inicio?"
+        description="Si vuelves al inicio y no has descargado los datos procesados, perderás los datos procesados y tendrás que volver a subir el archivo."
+        onConfirm={() => router.push("/")}
+        triggerComponent={
+          <Button className="-ml-4" variant="ghost">
+            <IoArrowBack className="mr-2" />
+            Ir a inicio
+          </Button>
+        }
+      />
+      <Link href={`/`}></Link>
       <h1 className="text-sm text-primary opacity-50">Resultados</h1>
       <Accordion type="single" collapsible className="w-full">
         <AccordionItem value="item-1">
@@ -68,7 +75,6 @@ export default function ProcessedPage() {
         </AccordionItem>
       </Accordion>
       <h2 className="text-2xl text-primary font-bold mt-2">
-        {/* These are your most relevant metrics and charts... */}
         Estos son tus métricas y gráficos más relevantes...
       </h2>
       <div className="flex flex-col">
