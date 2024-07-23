@@ -1,4 +1,5 @@
 import FileUploader from "@/components/file-uploader";
+import Loader from "@/components/loader";
 import { Button } from "@/components/ui/button";
 
 import Link from "next/link";
@@ -18,6 +19,7 @@ export default function Home() {
           </Button>
         </Link>
       </div>
+      <Loader />
     </main>
   );
 }

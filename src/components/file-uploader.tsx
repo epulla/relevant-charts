@@ -21,10 +21,16 @@ export default function FileUploader() {
 
   const { setMetricsResponse } = useMetricsStore();
   const { setChartsResponse } = useChartsStore();
-  const { setAiContext, setDataObject } = useGeneralStore();
+  const {
+    setAiContext,
+    setDataObject,
+    setIsFileReading,
+    setIsAiResultLoading,
+  } = useGeneralStore();
 
   useEffect(() => {
     if (done) {
+      setIsAiResultLoading(true);
       generateRelevantMetricsChartsObject(
         getFirstNRecords(fileContent, MAX_RECORDS_TO_CONSIDER_FOR_AI)
       ).then((generatedObject) => {
@@ -41,6 +47,7 @@ export default function FileUploader() {
             (a, b) => b.relevanceScore - a.relevanceScore
           )
         );
+        setIsAiResultLoading(false);
         // go to results page
         router.push("/results");
       });
@@ -53,11 +60,13 @@ export default function FileUploader() {
     setAiContext,
     setMetricsResponse,
     setChartsResponse,
+    setIsAiResultLoading,
   ]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { files } = e.target;
     if (!files || files.length === 0) return;
+    setIsFileReading(true);
     parseFile(
       files[0],
       // reader callback
@@ -67,6 +76,7 @@ export default function FileUploader() {
       // done callback
       () => {
         setDone(true);
+        setIsFileReading(false);
       }
     );
   };
