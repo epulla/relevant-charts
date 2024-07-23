@@ -7,7 +7,7 @@ import { IoArrowForward } from "react-icons/io5";
 
 export default function Home() {
   return (
-    <main className="flex-1 w-full flex flex-col items-center justify-center gap-16">
+    <main className="max-w-5xl mx-auto px-2 md:px-0 flex-1 w-full flex flex-col items-center justify-center gap-16">
       <h1 className="text-5xl text-primary font-bold">Relevant Charts</h1>
       <div className="flex gap-2 items-center">
         <FileUploader />
