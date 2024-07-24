@@ -18,12 +18,29 @@ import { MAX_RECORDS_TO_CONSIDER_FOR_AI } from "@/lib/constants";
 import { ConfirmationModal } from "@/components/confirmation-modal";
 import TooltipWrapper from "@/components/tooltip-wrapper";
 import { getAiResponse } from "../actions";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { useToast } from "@/components/ui/use-toast";
+
+function ReloadChecker() {
+  const searchParams = useSearchParams();
+  const { toast } = useToast();
+
+  useEffect(() => {
+    if (searchParams.has("reloaded")) {
+      toast({
+        title: "Hecho!",
+        description:
+          "Tus datos han sido procesados nuevamente. Probablemente hayas notado cambios en las métricas y gráficos.",
+        duration: 5000,
+      });
+    }
+  }, [searchParams, toast]);
+
+  return null;
+}
 
 export default function ProcessedPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
 
   const { toast } = useToast();
 
@@ -37,16 +54,6 @@ export default function ProcessedPage() {
     setIsAiResultLoading,
   } = useGeneralStore();
 
-  useEffect(() => {
-    if (searchParams.has("reloaded")) {
-      toast({
-        title: "Hecho!",
-        description: "Tus datos han sido procesados nuevamente. Probablemente hayas notado cambios en las métricas y gráficos.",
-        duration: 5000,
-      });
-    }
-  }, [searchParams, toast]);
-
   if (metricsResponses.length === 0 || chartsResponses.length === 0) {
     router.push("/");
     return null;
@@ -54,6 +61,9 @@ export default function ProcessedPage() {
 
   return (
     <main className="max-w-5xl mx-auto px-2 md:px-0 flex-1 w-full mt-12">
+      <Suspense>
+        <ReloadChecker />
+      </Suspense>
       <ConfirmationModal
         title="¿Estás seguro de que deseas volver al inicio?"
         description="Si vuelves al inicio y no has descargado los datos procesados, perderás los datos procesados y tendrás que volver a subir el archivo."

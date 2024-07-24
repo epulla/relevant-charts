@@ -25,5 +25,6 @@ export default async function LocalExampleCard({ example }: Props) {
   } satisfies ChartResponse;
   const ChartComponent = SUPPORTED_CHARTS_WITH_STRATEGIES[chartData.id];
 
-  return <ChartComponent chartResponse={chartData} />;
+  // return <ChartComponent chartResponse={chartData} />;
+  return <></>;
 }
