@@ -6,7 +6,7 @@ import { SUPPORTED_CHARTS_WITH_STRATEGIES } from "@/charts/utils";
 import { SUPPORTED_METRIC_STRATEGIES } from "@/metrics/utils";
 
 const openai = createOpenAI({
-  apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
+  apiKey: process.env.OPENAI_API_KEY,
 });
 
 export const AiResponse = z.object({
