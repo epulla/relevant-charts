@@ -6,7 +6,7 @@ import { useChartsStore } from "@/charts/store";
 import { SUPPORTED_CHARTS_WITH_STRATEGIES } from "@/charts/utils";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { IoArrowBack } from "react-icons/io5";
+import { IoArrowBack, IoDownload, IoRefresh } from "react-icons/io5";
 import { useGeneralStore } from "@/lib/store";
 import {
   Accordion,
@@ -17,6 +17,8 @@ import {
 import { jsonToCsv } from "@/lib/utils";
 import { MAX_RECORDS_TO_CONSIDER_FOR_AI } from "@/lib/constants";
 import { ConfirmationModal } from "@/components/confirmation-modal";
+import TooltipWrapper from "@/components/tooltip-wrapper";
+import { generateRelevantMetricsChartsObject } from "@/lib/ai";
 
 // export const metadata = {
 //   title: "Results Page",
@@ -26,9 +28,15 @@ import { ConfirmationModal } from "@/components/confirmation-modal";
 export default function ProcessedPage() {
   const router = useRouter();
 
-  const { metricsResponses } = useMetricsStore();
-  const { chartsResponses } = useChartsStore();
-  const { aiContext, dataObject } = useGeneralStore();
+  const { metricsResponses, setMetricsResponse } = useMetricsStore();
+  const { chartsResponses, setChartsResponse } = useChartsStore();
+  const {
+    aiContext,
+    dataObject,
+    setAiContext,
+    isAiResultLoading,
+    setIsAiResultLoading,
+  } = useGeneralStore();
   console.log("dataObject", dataObject);
   // console.log("metricsResponse", metricsResponse);
   // console.log("chartsResponse", chartsResponse);
@@ -50,7 +58,6 @@ export default function ProcessedPage() {
           </Button>
         }
       />
-      <Link href={`/`}></Link>
       <h1 className="text-sm text-primary opacity-50">Resultados</h1>
       <Accordion type="single" collapsible className="w-full">
         <AccordionItem value="item-1">
@@ -74,9 +81,70 @@ export default function ProcessedPage() {
           </AccordionContent>
         </AccordionItem>
       </Accordion>
-      <h2 className="text-2xl text-primary font-bold mt-2">
-        Estos son tus métricas y gráficos más relevantes...
-      </h2>
+      <div className="flex justify-between mt-2 mb-0.5">
+        <h2 className="text-2xl text-primary font-bold">
+          Estos son tus métricas y gráficos más relevantes...
+        </h2>
+        <div className="flex gap-0.5">
+          <TooltipWrapper tooltip="Regenerar el contexto de la IA y reprocesar los datos">
+            <Button
+              variant="outline"
+              size="sm"
+              className="rounded"
+              onClick={() => {
+                setIsAiResultLoading(true);
+                generateRelevantMetricsChartsObject(
+                  jsonToCsv(dataObject.slice(0, MAX_RECORDS_TO_CONSIDER_FOR_AI))
+                ).then((generatedObject) => {
+                  setAiContext(generatedObject.object.context);
+                  setMetricsResponse(
+                    generatedObject.object.metrics.toSorted(
+                      (a, b) => b.relevanceScore - a.relevanceScore
+                    )
+                  );
+                  setChartsResponse(
+                    generatedObject.object.charts.toSorted(
+                      (a, b) => b.relevanceScore - a.relevanceScore
+                    )
+                  );
+                  setIsAiResultLoading(false);
+                  router.push("/results");
+                });
+              }}
+            >
+              <IoRefresh
+                aria-checked={isAiResultLoading}
+                className="aria-[checked=true]:animate-spin"
+              />
+            </Button>
+          </TooltipWrapper>
+          <TooltipWrapper tooltip="Descargar datos procesados en .json">
+            <Button
+              variant="outline"
+              size="sm"
+              className="rounded bg-white text-black"
+              onClick={() => {
+                const data = {
+                  aiContext,
+                  metricsResponses,
+                  chartsResponses,
+                };
+                const blob = new Blob([JSON.stringify(data, null, 2)], {
+                  type: "application/json",
+                });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = "data.json";
+                a.click();
+                URL.revokeObjectURL(url);
+              }}
+            >
+              <IoDownload />
+            </Button>
+          </TooltipWrapper>
+        </div>
+      </div>
       <div className="flex flex-col">
         <div className="flex flex-col md:flex-row">
           <div className="flex flex-col md:w-64">
@@ -87,7 +155,7 @@ export default function ProcessedPage() {
                 name={metric.name}
                 columnTarget={metric.columnTarget}
                 strategy={metric.strategy}
-              ></MetricCard>
+              />
             ))}
           </div>
           <div className="flex-1">
