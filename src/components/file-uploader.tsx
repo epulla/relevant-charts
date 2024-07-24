@@ -4,12 +4,12 @@ import { useEffect, useRef, useState } from "react";
 import { IoCloudUpload } from "react-icons/io5";
 import { Button } from "./ui/button";
 import { csvToJson, getFirstNRecords, parseFile } from "@/lib/utils";
-import { generateRelevantMetricsChartsObject } from "@/lib/ai";
 import { useMetricsStore } from "@/metrics/store";
 import { useRouter } from "next/navigation";
 import { useChartsStore } from "@/charts/store";
 import { MAX_RECORDS_TO_CONSIDER_FOR_AI } from "@/lib/constants";
 import { useGeneralStore } from "@/lib/store";
+import { getAiResponse } from "@/app/actions";
 
 // reference: https://stackoverflow.com/questions/71991961/how-to-read-content-of-uploaded-json-file-on-react-next-js
 export default function FileUploader() {
@@ -29,27 +29,29 @@ export default function FileUploader() {
   } = useGeneralStore();
 
   useEffect(() => {
-    if (done) {
+    const callAiResponseAction = async () => {
       setIsAiResultLoading(true);
-      generateRelevantMetricsChartsObject(
+      const generatedObject = await getAiResponse(
         getFirstNRecords(fileContent, MAX_RECORDS_TO_CONSIDER_FOR_AI)
-      ).then((generatedObject) => {
-        setAiContext(generatedObject.object.context);
-        setDataObject(csvToJson(fileContent));
-        setMetricsResponse(
-          generatedObject.object.metrics.toSorted(
-            (a, b) => b.relevanceScore - a.relevanceScore
-          )
-        );
-        setChartsResponse(
-          generatedObject.object.charts.toSorted(
-            (a, b) => b.relevanceScore - a.relevanceScore
-          )
-        );
-        setIsAiResultLoading(false);
-        // go to results page
-        router.push("/results");
-      });
+      );
+      setAiContext(generatedObject.context);
+      setDataObject(csvToJson(fileContent));
+      setMetricsResponse(
+        generatedObject.metrics.toSorted(
+          (a, b) => b.relevanceScore - a.relevanceScore
+        )
+      );
+      setChartsResponse(
+        generatedObject.charts.toSorted(
+          (a, b) => b.relevanceScore - a.relevanceScore
+        )
+      );
+      setIsAiResultLoading(false);
+      // go to results page
+      router.push("/results");
+    };
+    if (done) {
+      callAiResponseAction();
     }
   }, [
     done,

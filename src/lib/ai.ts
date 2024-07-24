@@ -9,54 +9,54 @@ const openai = createOpenAI({
   apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
 });
 
+export const AiResponse = z.object({
+  context: z
+    .string()
+    .describe(
+      "Descripción de las columnas del dataset (nombre, tipo de dato y descripción corta)"
+    ),
+  metrics: z.array(
+    z.object({
+      name: z.string().describe("Nombre de la métrica"),
+      columnTarget: z.string().describe("Columna del dataset"),
+      strategy: z
+        .string()
+        .describe(
+          `Id de la estrategia de cálculo de la métrica de la lista ${Object.keys(
+            SUPPORTED_METRIC_STRATEGIES
+          )}`
+        ),
+      unit: z.string().describe("Unidad de medida"),
+      relevanceScore: z
+        .number()
+        .describe("Puntaje de relevancia de la métrica sobre 10"),
+    })
+  ),
+  charts: z.array(
+    z.object({
+      id: z
+        .string()
+        .describe(
+          `Id del gráfico estadístico de la lista ${Object.keys(
+            SUPPORTED_CHARTS_WITH_STRATEGIES
+          )}`
+        ),
+      title: z.string().describe("Titulo del gráfico"),
+      description: z.string().describe("Descripción corta del gráfico"),
+      labelColumn: z.string().describe("Columna de etiquetas para el eje X"),
+      dataColumn: z.string().describe("Columna de datos para el eje Y"),
+      strategy: z.string().describe("Estrategia de cálculo de datos"),
+      relevanceScore: z
+        .number()
+        .describe("Puntaje de relevancia de la métrica sobre 10"),
+    })
+  ),
+});
+
 export const generateRelevantMetricsChartsObject = (datasetSample: string) =>
   generateObject({
     model: openai("gpt-4o-mini"),
-    schema: z.object({
-      context: z
-        .string()
-        .describe(
-          "Descripción de las columnas del dataset (nombre, tipo de dato y descripción corta)"
-        ),
-      metrics: z.array(
-        z.object({
-          name: z.string().describe("Nombre de la métrica"),
-          columnTarget: z.string().describe("Columna del dataset"),
-          strategy: z
-            .string()
-            .describe(
-              `Id de la estrategia de cálculo de la métrica de la lista ${Object.keys(
-                SUPPORTED_METRIC_STRATEGIES
-              )}`
-            ),
-          unit: z.string().describe("Unidad de medida"),
-          relevanceScore: z
-            .number()
-            .describe("Puntaje de relevancia de la métrica sobre 10"),
-        })
-      ),
-      charts: z.array(
-        z.object({
-          id: z
-            .string()
-            .describe(
-              `Id del gráfico estadístico de la lista ${Object.keys(
-                SUPPORTED_CHARTS_WITH_STRATEGIES
-              )}`
-            ),
-          title: z.string().describe("Titulo del gráfico"),
-          description: z.string().describe("Descripción corta del gráfico"),
-          labelColumn: z
-            .string()
-            .describe("Columna de etiquetas para el eje X"),
-          dataColumn: z.string().describe("Columna de datos para el eje Y"),
-          strategy: z.string().describe("Estrategia de cálculo de datos"),
-          relevanceScore: z
-            .number()
-            .describe("Puntaje de relevancia de la métrica sobre 10"),
-        })
-      ),
-    }),
+    schema: AiResponse,
     mode: "json",
     system: `Te vas a comportar como un analista de datos con una amplia experiencia en el campo de analítica de datos y gráficos estadísticos para la toma de decisiones estratégicas. Serás capaz de analizar las columnas de un dataset junto a un pequeño número de registros, el tipo de dato (númerico o texto) y las relaciones entre ellas. Todas tus respuestas deberán estar en español.`,
     messages: [

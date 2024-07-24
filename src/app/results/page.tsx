@@ -1,5 +1,4 @@
 "use client";
-import Link from "next/link";
 import MetricCard from "@/metrics/components/metric-card";
 import { useMetricsStore } from "@/metrics/store";
 import { useChartsStore } from "@/charts/store";
@@ -18,7 +17,7 @@ import { jsonToCsv } from "@/lib/utils";
 import { MAX_RECORDS_TO_CONSIDER_FOR_AI } from "@/lib/constants";
 import { ConfirmationModal } from "@/components/confirmation-modal";
 import TooltipWrapper from "@/components/tooltip-wrapper";
-import { generateRelevantMetricsChartsObject } from "@/lib/ai";
+import { getAiResponse } from "../actions";
 
 export default function ProcessedPage() {
   const router = useRouter();
@@ -83,25 +82,25 @@ export default function ProcessedPage() {
               variant="outline"
               size="sm"
               className="rounded"
-              onClick={() => {
+              onClick={async () => {
                 setIsAiResultLoading(true);
-                generateRelevantMetricsChartsObject(
+                const generatedObject = await getAiResponse(
                   jsonToCsv(dataObject.slice(0, MAX_RECORDS_TO_CONSIDER_FOR_AI))
-                ).then((generatedObject) => {
-                  setAiContext(generatedObject.object.context);
-                  setMetricsResponse(
-                    generatedObject.object.metrics.toSorted(
-                      (a, b) => b.relevanceScore - a.relevanceScore
-                    )
-                  );
-                  setChartsResponse(
-                    generatedObject.object.charts.toSorted(
-                      (a, b) => b.relevanceScore - a.relevanceScore
-                    )
-                  );
-                  setIsAiResultLoading(false);
-                  router.push("/results");
-                });
+                );
+                setAiContext(generatedObject.context);
+                setMetricsResponse(
+                  generatedObject.metrics.toSorted(
+                    (a, b) => b.relevanceScore - a.relevanceScore
+                  )
+                );
+                setChartsResponse(
+                  generatedObject.charts.toSorted(
+                    (a, b) => b.relevanceScore - a.relevanceScore
+                  )
+                );
+                setIsAiResultLoading(false);
+                // go to results page
+                router.push("/results");
               }}
             >
               <IoRefresh
