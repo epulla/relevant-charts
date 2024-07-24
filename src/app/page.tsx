@@ -1,6 +1,7 @@
 import FileUploader from "@/components/file-uploader";
 import Loader from "@/components/loader";
 import { Button } from "@/components/ui/button";
+import Warnings from "@/components/warnings";
 
 import Link from "next/link";
 
@@ -20,6 +21,7 @@ export default function Home() {
         </Link>
       </div>
       <Loader />
+      <Warnings />
     </main>
   );
 }
