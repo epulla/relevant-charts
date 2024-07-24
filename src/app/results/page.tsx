@@ -13,7 +13,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { jsonToCsv } from "@/lib/utils";
+import { downloadFile, jsonToCsv } from "@/lib/utils";
 import { MAX_RECORDS_TO_CONSIDER_FOR_AI } from "@/lib/constants";
 import { ConfirmationModal } from "@/components/confirmation-modal";
 import TooltipWrapper from "@/components/tooltip-wrapper";
@@ -139,12 +139,7 @@ export default function ProcessedPage() {
                 const blob = new Blob([JSON.stringify(data, null, 2)], {
                   type: "application/json",
                 });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement("a");
-                a.href = url;
-                a.download = "data.json";
-                a.click();
-                URL.revokeObjectURL(url);
+                downloadFile("processed-data.json", blob);
               }}
             >
               <IoDownload />

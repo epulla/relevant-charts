@@ -18,9 +18,10 @@ import { SUPPORTED_CHARTS_STRATEGIES } from "../utils";
 const chartConfig = {} satisfies ChartConfig;
 
 export function ShadcnBarChart({ chartResponse }: ChartProps) {
-  const [processedData, setProcessedData] = useState<any>([]);
+  const [processedData, setProcessedData] = useState<any[]>([]);
   const { dataObject } = useGeneralStore();
   const randomColor = useMemo(() => getRandomColor(), []);
+  console.log(processedData);
 
   useEffect(() => {
     const strategyFunction =
@@ -38,6 +39,7 @@ export function ShadcnBarChart({ chartResponse }: ChartProps) {
     <ShadcnChartTemplate
       title={chartResponse.title}
       description={chartResponse.description}
+      processedData={processedData}
     >
       <ChartContainer config={chartConfig}>
         <BarChart accessibilityLayer data={processedData}>

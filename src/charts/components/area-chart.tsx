@@ -38,6 +38,7 @@ export function ShadcnAreaChart({ chartResponse }: ChartProps) {
     <ShadcnChartTemplate
       title={chartResponse.title}
       description={chartResponse.description}
+      processedData={processedData}
     >
       <ChartContainer config={chartConfig}>
         <AreaChart

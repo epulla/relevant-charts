@@ -84,4 +84,13 @@ export const jsonToCsv = (json: any[]) => {
     csv.push(headers.map((header) => row[header]).join(","));
   }
   return csv.join("\n");
-}
+};
+
+export const downloadFile = (filename: string, data: Blob) => {
+  const url = URL.createObjectURL(data);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+};

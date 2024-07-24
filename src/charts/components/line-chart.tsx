@@ -37,6 +37,7 @@ export function ShadcnLineChart({ chartResponse }: ChartProps) {
     <ShadcnChartTemplate
       title={chartResponse.title}
       description={chartResponse.description}
+      processedData={processedData}
     >
       <ChartContainer config={chartConfig}>
         <LineChart
