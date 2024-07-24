@@ -8,15 +8,18 @@ import { ReactNode } from "react";
 interface Props {
   children: ReactNode;
   tooltip: string;
+  align?: "start" | "center" | "end";
 }
 
-export default function TooltipWrapper({ children, tooltip }: Props) {
+export default function TooltipWrapper({
+  tooltip,
+  align = "center",
+  children,
+}: Props) {
   return (
     <Tooltip>
       <TooltipTrigger asChild>{children}</TooltipTrigger>
-      <TooltipContent>
-        <p className="text-sm text-primary opacity-50">{tooltip}</p>
-      </TooltipContent>
+      <TooltipContent align={align}>{tooltip}</TooltipContent>
     </Tooltip>
   );
 }
