@@ -7,7 +7,7 @@ export default function Loader() {
   const { isFileReading, isAiResultLoading } = useGeneralStore();
   return (
     <div
-      className="flex flex-col items-center aria-[hidden=true]:hidden"
+      className="flex flex-col items-center aria-[hidden=true]:invisible"
       aria-hidden={!isFileReading && !isAiResultLoading}
     >
       <IoReload className="animate-spin text-3xl text-primary" />
