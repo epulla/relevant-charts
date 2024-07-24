@@ -3,7 +3,7 @@ import MetricCard from "@/metrics/components/metric-card";
 import { useMetricsStore } from "@/metrics/store";
 import { useChartsStore } from "@/charts/store";
 import { SUPPORTED_CHARTS_WITH_STRATEGIES } from "@/charts/utils";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { IoArrowBack, IoDownload, IoRefresh } from "react-icons/io5";
 import { useGeneralStore } from "@/lib/store";
@@ -18,9 +18,14 @@ import { MAX_RECORDS_TO_CONSIDER_FOR_AI } from "@/lib/constants";
 import { ConfirmationModal } from "@/components/confirmation-modal";
 import TooltipWrapper from "@/components/tooltip-wrapper";
 import { getAiResponse } from "../actions";
+import { useEffect } from "react";
+import { useToast } from "@/components/ui/use-toast";
 
 export default function ProcessedPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const { toast } = useToast();
 
   const { metricsResponses, setMetricsResponse } = useMetricsStore();
   const { chartsResponses, setChartsResponse } = useChartsStore();
@@ -32,10 +37,21 @@ export default function ProcessedPage() {
     setIsAiResultLoading,
   } = useGeneralStore();
 
+  useEffect(() => {
+    if (searchParams.has("reloaded")) {
+      toast({
+        title: "Hecho!",
+        description: "Tus datos han sido procesados nuevamente. Probablemente hayas notado cambios en las métricas y gráficos.",
+        duration: 5000,
+      });
+    }
+  }, [searchParams, toast]);
+
   if (metricsResponses.length === 0 || chartsResponses.length === 0) {
     router.push("/");
     return null;
   }
+
   return (
     <main className="max-w-5xl mx-auto px-2 md:px-0 flex-1 w-full mt-12">
       <ConfirmationModal
@@ -100,7 +116,7 @@ export default function ProcessedPage() {
                 );
                 setIsAiResultLoading(false);
                 // go to results page
-                router.push("/results");
+                router.push("/results?reloaded=true");
               }}
             >
               <IoRefresh

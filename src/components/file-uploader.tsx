@@ -10,6 +10,7 @@ import { useChartsStore } from "@/charts/store";
 import { MAX_RECORDS_TO_CONSIDER_FOR_AI } from "@/lib/constants";
 import { useGeneralStore } from "@/lib/store";
 import { getAiResponse } from "@/app/actions";
+import { useToast } from "./ui/use-toast";
 
 // reference: https://stackoverflow.com/questions/71991961/how-to-read-content-of-uploaded-json-file-on-react-next-js
 export default function FileUploader() {
@@ -28,27 +29,45 @@ export default function FileUploader() {
     setIsAiResultLoading,
   } = useGeneralStore();
 
+  const { toast } = useToast();
+
   useEffect(() => {
     const callAiResponseAction = async () => {
       setIsAiResultLoading(true);
-      const generatedObject = await getAiResponse(
-        getFirstNRecords(fileContent, MAX_RECORDS_TO_CONSIDER_FOR_AI)
-      );
-      setAiContext(generatedObject.context);
-      setDataObject(csvToJson(fileContent));
-      setMetricsResponse(
-        generatedObject.metrics.toSorted(
-          (a, b) => b.relevanceScore - a.relevanceScore
-        )
-      );
-      setChartsResponse(
-        generatedObject.charts.toSorted(
-          (a, b) => b.relevanceScore - a.relevanceScore
-        )
-      );
-      setIsAiResultLoading(false);
-      // go to results page
-      router.push("/results");
+      try {
+        const generatedObject = await getAiResponse(
+          getFirstNRecords(fileContent, MAX_RECORDS_TO_CONSIDER_FOR_AI)
+        );
+        setAiContext(generatedObject.context);
+        setDataObject(csvToJson(fileContent));
+        setMetricsResponse(
+          generatedObject.metrics.toSorted(
+            (a, b) => b.relevanceScore - a.relevanceScore
+          )
+        );
+        setChartsResponse(
+          generatedObject.charts.toSorted(
+            (a, b) => b.relevanceScore - a.relevanceScore
+          )
+        );
+        setIsAiResultLoading(false);
+        // go to results page
+        router.push("/results");
+      } catch (error) {
+        console.error("Error while fetching AI response", error);
+        setIsAiResultLoading(false);
+        setChartsResponse([]);
+        setDataObject([]);
+        setFileContent("");
+        setDone(false);
+        fileInputRef.current!.value = "";
+        toast({
+          title: "Uh oh!",
+          description: "Ocurrió un error al recibir la respuesta de la IA",
+          duration: 5000,
+        });
+        return;
+      }
     };
     if (done) {
       callAiResponseAction();
@@ -62,6 +81,7 @@ export default function FileUploader() {
     setMetricsResponse,
     setChartsResponse,
     setIsAiResultLoading,
+    toast,
   ]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
