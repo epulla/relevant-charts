@@ -8,7 +8,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { getRandomColor } from "@/lib/utils";
 import { ChartProps } from "../types";
 import { ShadcnChartTemplate } from "./chart-template";
@@ -21,6 +21,7 @@ export function ShadcnBarChart({ chartResponse }: ChartProps) {
   const [processedData, setProcessedData] = useState<any>([]);
   console.log("processedData", processedData);
   const { dataObject } = useGeneralStore();
+  const randomColor = useMemo(() => getRandomColor(), []);
 
   useEffect(() => {
     const strategyFunction =
@@ -53,7 +54,7 @@ export function ShadcnBarChart({ chartResponse }: ChartProps) {
             cursor={false}
             content={<ChartTooltipContent indicator="dashed" />}
           />
-          <Bar dataKey={chartResponse.dataColumn} fill={getRandomColor()} />
+          <Bar dataKey={chartResponse.dataColumn} fill={randomColor} />
         </BarChart>
       </ChartContainer>
     </ShadcnChartTemplate>
