@@ -10,7 +10,15 @@ import { IoArrowForward } from "react-icons/io5";
 export default function Home() {
   return (
     <main className="max-w-5xl mx-auto px-2 md:px-0 flex-1 w-full flex flex-col items-center justify-center gap-16">
-      <h1 className="text-5xl text-primary font-bold">Relevant Charts</h1>
+      <h1 className="text-5xl text-primary font-bold">
+        <div className="inline-grid">
+          <span className="mr-2 col-start-1 row-start-1 bg-gradient-to-r from-red-500 to-orange-500 blur-xl"></span>
+          <span className="mr-2 col-start-1 row-start-1 bg-gradient-to-r from-red-500 to-orange-500 inline-block text-transparent bg-clip-text">
+            Relevant
+          </span>
+          <span className="col-start-2 row-start-1">Charts</span>
+        </div>
+      </h1>
       <div className="flex gap-2 items-center">
         <FileUploader />
         <Link href="/examples">
