@@ -8,7 +8,7 @@ Este es un proyecto de [Next.js](https://nextjs.org/)
 npm i
 ```
 
-2. Crear el archivo `.env.local`, copiar el contenido `.env.local.example` y agregar tus variables de entorno (la `)
+2. Crear el archivo `.env.local`, copiar el contenido `.env.local.example` y agregar tus variables de entorno:
 
 ```python
 # copy this file to .env.local and fill in the values
