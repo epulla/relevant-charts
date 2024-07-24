@@ -7,6 +7,11 @@ import Link from "next/link";
 
 import { IoArrowForward } from "react-icons/io5";
 
+export const metadata = {
+  title: "Relevant Charts",
+  description: "Sube tus datos y genera gráficos relevantes",
+};
+
 export default function Home() {
   return (
     <main className="max-w-5xl mx-auto px-2 md:px-0 flex-1 w-full flex flex-col items-center justify-center gap-16">
