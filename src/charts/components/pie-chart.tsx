@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Cell, Pie, PieChart } from "recharts";
 
 import {
@@ -18,13 +18,11 @@ import { useGeneralStore } from "@/lib/store";
 const chartConfig = {
   name: {
     label: "Name",
-  }
+  },
 } satisfies ChartConfig;
 
 export function ShadcnPieChart({ chartResponse }: ChartProps) {
   const [processedData, setProcessedData] = useState<any[]>([]);
-  console.log("chartResponse from pie-chart", chartResponse);
-  console.log("processedData from pie-chart", processedData);
   const { dataObject } = useGeneralStore();
 
   useEffect(() => {
@@ -54,8 +52,6 @@ export function ShadcnPieChart({ chartResponse }: ChartProps) {
           />
           <Pie
             data={processedData}
-            // dataKey={chartResponse.dataColumn}
-            // nameKey={chartResponse.labelColumn}
             dataKey={"points"}
             nameKey={"name"}
             innerRadius={60}

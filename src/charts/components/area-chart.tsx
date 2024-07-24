@@ -21,7 +21,6 @@ export function ShadcnAreaChart({ chartResponse }: ChartProps) {
   const [processedData, setProcessedData] = useState<any[]>([]);
 
   const randomColor = useMemo(() => getRandomColor(), []);
-  console.log("processedData", processedData);
   const { dataObject } = useGeneralStore();
 
   useEffect(() => {
@@ -50,15 +49,6 @@ export function ShadcnAreaChart({ chartResponse }: ChartProps) {
           }}
         >
           <CartesianGrid vertical={false} />
-          {/* {processedData.length > 0 && (
-            <XAxis
-              dataKey={Object.keys(processedData[0])[0]}
-              tickLine={false}
-              tickMargin={10}
-              axisLine={false}
-              tickFormatter={(value) => value.slice(0, 3)}
-            />
-          )} */}
           <XAxis
             dataKey={chartResponse.labelColumn}
             tickLine={false}
@@ -78,20 +68,6 @@ export function ShadcnAreaChart({ chartResponse }: ChartProps) {
             stroke={randomColor}
             stackId="a"
           />
-          {/* {chartResponse.data.map((item) => {
-            const randomColor = getRandomColor();
-            return (
-              <Area
-                key={item.name}
-                dataKey={item.name}
-                type="natural"
-                fill={randomColor}
-                fillOpacity={0.4}
-                stroke={randomColor}
-                stackId="a"
-              />
-            );
-          })} */}
         </AreaChart>
       </ChartContainer>
     </ShadcnChartTemplate>

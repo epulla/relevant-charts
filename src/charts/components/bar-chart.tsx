@@ -19,7 +19,6 @@ const chartConfig = {} satisfies ChartConfig;
 
 export function ShadcnBarChart({ chartResponse }: ChartProps) {
   const [processedData, setProcessedData] = useState<any>([]);
-  console.log("processedData", processedData);
   const { dataObject } = useGeneralStore();
   const randomColor = useMemo(() => getRandomColor(), []);
 

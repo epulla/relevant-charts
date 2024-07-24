@@ -20,11 +20,6 @@ import { ConfirmationModal } from "@/components/confirmation-modal";
 import TooltipWrapper from "@/components/tooltip-wrapper";
 import { generateRelevantMetricsChartsObject } from "@/lib/ai";
 
-// export const metadata = {
-//   title: "Results Page",
-//   description: "Your data has been processed and these are the results",
-// };
-
 export default function ProcessedPage() {
   const router = useRouter();
 
@@ -37,9 +32,6 @@ export default function ProcessedPage() {
     isAiResultLoading,
     setIsAiResultLoading,
   } = useGeneralStore();
-  console.log("dataObject", dataObject);
-  // console.log("metricsResponse", metricsResponse);
-  // console.log("chartsResponse", chartsResponse);
 
   if (metricsResponses.length === 0 || chartsResponses.length === 0) {
     router.push("/");

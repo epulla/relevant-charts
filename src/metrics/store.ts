@@ -1,6 +1,5 @@
 import { create } from "zustand";
 
-// comes from src/lib/ai.ts
 export type MetricResponse = {
   name: string;
   columnTarget: string;

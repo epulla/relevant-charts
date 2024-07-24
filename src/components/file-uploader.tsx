@@ -34,7 +34,6 @@ export default function FileUploader() {
       generateRelevantMetricsChartsObject(
         getFirstNRecords(fileContent, MAX_RECORDS_TO_CONSIDER_FOR_AI)
       ).then((generatedObject) => {
-        console.log("generatedObject", generatedObject);
         setAiContext(generatedObject.object.context);
         setDataObject(csvToJson(fileContent));
         setMetricsResponse(
@@ -98,7 +97,6 @@ export default function FileUploader() {
         id="file-input"
         type="file"
         accept=".csv" // Only allow CSV files for now
-        // accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
         className="hidden"
         onChange={handleFileChange}
       />

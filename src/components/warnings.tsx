@@ -50,7 +50,6 @@ export default function Warnings() {
           delay: 7000,
         }),
       ]}
-      //   orientation="vertical"
     >
       <CarouselContent>
         {warnings.map((warning, index) => (
