@@ -21,7 +21,7 @@ interface Props {
 export default async function ExamplePage({ params }: Props) {
   const example = LOCAL_EXAMPLES[params.id];
   const file = await fs.readFile(
-    `${process.cwd()}/public/${example.data}`,
+    `${process.cwd()}/src/examples/${example.data}`,
     "utf8"
   );
   const data: ExampleData = JSON.parse(file);
