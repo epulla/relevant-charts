@@ -1,39 +1,18 @@
 "use client";
 
 import { Card } from "@/components/ui/card";
-import { SUPPORTED_METRIC_STRATEGIES } from "../utils";
-import { useGeneralStore } from "@/lib/store";
-import { useEffect, useState } from "react";
 
 interface Props {
   name: string;
-  columnTarget: string;
-  strategy: string;
+  metric: number;
   unit: string;
 }
 
 export default function MetricCard({
   name,
-  columnTarget,
-  strategy,
+  metric,
   unit,
 }: Props) {
-  const [metric, setMetric] = useState<number>(0);
-
-  const { dataObject } = useGeneralStore();
-
-  useEffect(() => {
-    if (dataObject.length === 0) return;
-    setMetric(
-      SUPPORTED_METRIC_STRATEGIES[strategy](
-        dataObject.map((row) => {
-          const value = row[columnTarget];
-          if (value === undefined || isNaN(value)) return 0;
-          return parseFloat(value);
-        })
-      )
-    );
-  }, [columnTarget, dataObject, strategy]);
   return (
     <Card className="flex-1 flex flex-col justify-center items-center py-6 md:py-0 px-6 overflow-hidden">
       <div className="flex gap-1">

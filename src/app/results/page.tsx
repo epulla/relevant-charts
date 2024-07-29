@@ -20,6 +20,7 @@ import TooltipWrapper from "@/components/tooltip-wrapper";
 import { getAiResponse } from "../actions";
 import { Suspense, useEffect } from "react";
 import { useToast } from "@/components/ui/use-toast";
+import { SUPPORTED_METRIC_STRATEGIES } from "@/metrics/utils";
 
 function ReloadChecker() {
   const searchParams = useSearchParams();
@@ -160,15 +161,22 @@ export default function ProcessedPage() {
       <div className="flex flex-col">
         <div className="flex flex-col md:flex-row">
           <div className="flex flex-col md:w-64">
-            {metricsResponses.map((metric) => (
-              <MetricCard
-                key={metric.name}
-                unit={metric.unit}
-                name={metric.name}
-                columnTarget={metric.columnTarget}
-                strategy={metric.strategy}
+            {metricsResponses.map((metricResponse) => {
+              const metric = SUPPORTED_METRIC_STRATEGIES[metricResponse.strategy](
+                dataObject.map((row) => {
+                  const value = row[metricResponse.columnTarget];
+                  if (value === undefined || isNaN(value)) return 0;
+                  return parseFloat(value);
+                })
+              );
+              return <MetricCard
+                key={metricResponse.name}
+                name={metricResponse.name}
+                metric={metric}
+                unit={metricResponse.unit}
               />
-            ))}
+            }
+            )}
           </div>
           <div className="flex-1">
             {SUPPORTED_CHARTS_WITH_STRATEGIES[chartsResponses[0].id].component({
