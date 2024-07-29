@@ -21,7 +21,6 @@ export function ShadcnBarChart({ chartResponse }: ChartProps) {
   const [processedData, setProcessedData] = useState<any[]>([]);
   const { dataObject } = useGeneralStore();
   const randomColor = useMemo(() => getRandomColor(), []);
-  console.log(processedData);
 
   useEffect(() => {
     const strategyFunction =
