@@ -7,7 +7,7 @@ export const LOCAL_EXAMPLES: Record<string, Example> = {
     author: "System",
     name: "Simple data",
     createdAt: "2024-07-20T17:16:47.586Z",
-    data: "samples/1/data.json", // from src/examples folder
+    data: "samples/1/data.json", // from public folder
     cover: "samples/1/cover.webp", // from public folder
   },
 };

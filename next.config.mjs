@@ -3,7 +3,7 @@ const nextConfig = {
   output: "standalone",
   experimental: {
     outputFileTracingIncludes: {
-        '/': ['src/examples/samples/**/*'],
+        '/': ['public/samples/**/*.json'],
     }
   }
 };
