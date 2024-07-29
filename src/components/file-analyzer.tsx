@@ -13,7 +13,7 @@ import { getAiResponse } from "@/app/actions";
 import { useToast } from "./ui/use-toast";
 
 // reference: https://stackoverflow.com/questions/71991961/how-to-read-content-of-uploaded-json-file-on-react-next-js
-export default function FileUploader() {
+export default function FileAnalyzer() {
   const [fileContent, setFileContent] = useState<string>("");
   const [done, setDone] = useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement>(null);

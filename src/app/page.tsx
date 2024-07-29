@@ -1,4 +1,4 @@
-import FileUploader from "@/components/file-uploader";
+import FileAnalyzer from "@/components/file-analyzer";
 import Loader from "@/components/loader";
 import { Button } from "@/components/ui/button";
 import Warnings from "@/components/warnings";
@@ -25,7 +25,7 @@ export default function Home() {
         </div>
       </h1>
       <div className="flex gap-2 items-center">
-        <FileUploader />
+        <FileAnalyzer />
         <Link href="/examples">
           <Button variant="secondary">
             Ver ejemplos
