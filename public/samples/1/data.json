@@ -1,0 +1,353 @@
+{
+    "aiContext": "El dataset contiene cuatro columnas: 'id' (número, identificador único), 'name' (texto, nombre de la persona), 'points' (número, puntos obtenidos) y 'age' (número, edad de la persona).",
+    "metrics": [
+        {
+            "name": "Total de Puntos",
+            "unit": "puntos",
+            "relevanceScore": 9,
+            "data": 1125
+        },
+        {
+            "name": "Edad Promedio",
+            "unit": "años",
+            "relevanceScore": 8,
+            "data": 25.555555555555557
+        },
+        {
+            "name": "Conteo de Personas",
+            "unit": "personas",
+            "relevanceScore": 7,
+            "data": 18
+        }
+    ],
+    "charts": [
+        {
+            "title": "Puntos por Persona",
+            "description": "Gráfico de barras que muestra los puntos obtenidos por cada persona.",
+            "relevanceScore": 9,
+            "labelColumn": "name",
+            "dataColumn": "points",
+            "chartId": "bar",
+            "data": [
+                {
+                    "name": "John",
+                    "points": 20
+                },
+                {
+                    "name": "Smith",
+                    "points": 30
+                },
+                {
+                    "name": "Bryan",
+                    "points": 25
+                },
+                {
+                    "name": "Chris",
+                    "points": 35
+                },
+                {
+                    "name": "David",
+                    "points": 40
+                },
+                {
+                    "name": "Edward",
+                    "points": 45
+                },
+                {
+                    "name": "Frank",
+                    "points": 50
+                },
+                {
+                    "name": "George",
+                    "points": 55
+                },
+                {
+                    "name": "Henry",
+                    "points": 60
+                },
+                {
+                    "name": "Ian",
+                    "points": 65
+                },
+                {
+                    "name": "Jack",
+                    "points": 70
+                },
+                {
+                    "name": "Kevin",
+                    "points": 75
+                },
+                {
+                    "name": "Luke",
+                    "points": 80
+                },
+                {
+                    "name": "Michael",
+                    "points": 85
+                },
+                {
+                    "name": "Nick",
+                    "points": 90
+                },
+                {
+                    "name": "Oscar",
+                    "points": 95
+                },
+                {
+                    "name": "Peter",
+                    "points": 100
+                },
+                {
+                    "name": "Quentin",
+                    "points": 105
+                }
+            ]
+        },
+        {
+            "title": "Distribución de Puntos",
+            "description": "Gráfico circular que representa la proporción de puntos obtenidos por cada persona.",
+            "relevanceScore": 8,
+            "labelColumn": "name",
+            "dataColumn": "points",
+            "chartId": "pie",
+            "data": [
+                {
+                    "name": "John",
+                    "points": 20
+                },
+                {
+                    "name": "Smith",
+                    "points": 30
+                },
+                {
+                    "name": "Bryan",
+                    "points": 25
+                },
+                {
+                    "name": "Chris",
+                    "points": 35
+                },
+                {
+                    "name": "David",
+                    "points": 40
+                },
+                {
+                    "name": "Edward",
+                    "points": 45
+                },
+                {
+                    "name": "Frank",
+                    "points": 50
+                },
+                {
+                    "name": "George",
+                    "points": 55
+                },
+                {
+                    "name": "Henry",
+                    "points": 60
+                },
+                {
+                    "name": "Ian",
+                    "points": 65
+                },
+                {
+                    "name": "Jack",
+                    "points": 70
+                },
+                {
+                    "name": "Kevin",
+                    "points": 75
+                },
+                {
+                    "name": "Luke",
+                    "points": 80
+                },
+                {
+                    "name": "Michael",
+                    "points": 85
+                },
+                {
+                    "name": "Nick",
+                    "points": 90
+                },
+                {
+                    "name": "Oscar",
+                    "points": 95
+                },
+                {
+                    "name": "Peter",
+                    "points": 100
+                },
+                {
+                    "name": "Quentin",
+                    "points": 105
+                }
+            ]
+        },
+        {
+            "title": "Evolución de la Edad",
+            "description": "Gráfico de líneas que muestra la edad de cada persona.",
+            "relevanceScore": 7,
+            "labelColumn": "name",
+            "dataColumn": "age",
+            "chartId": "line",
+            "data": [
+                {
+                    "name": "John",
+                    "age": 20
+                },
+                {
+                    "name": "Smith",
+                    "age": 25
+                },
+                {
+                    "name": "Bryan",
+                    "age": 18
+                },
+                {
+                    "name": "Chris",
+                    "age": 30
+                },
+                {
+                    "name": "David",
+                    "age": 15
+                },
+                {
+                    "name": "Edward",
+                    "age": 35
+                },
+                {
+                    "name": "Frank",
+                    "age": 32
+                },
+                {
+                    "name": "George",
+                    "age": 30
+                },
+                {
+                    "name": "Henry",
+                    "age": 20
+                },
+                {
+                    "name": "Ian",
+                    "age": 25
+                },
+                {
+                    "name": "Jack",
+                    "age": 30
+                },
+                {
+                    "name": "Kevin",
+                    "age": 35
+                },
+                {
+                    "name": "Luke",
+                    "age": 25
+                },
+                {
+                    "name": "Michael",
+                    "age": 18
+                },
+                {
+                    "name": "Nick",
+                    "age": 19
+                },
+                {
+                    "name": "Oscar",
+                    "age": 40
+                },
+                {
+                    "name": "Peter",
+                    "age": 21
+                },
+                {
+                    "name": "Quentin",
+                    "age": 22
+                }
+            ]
+        },
+        {
+            "title": "Acumulación de Puntos",
+            "description": "Gráfico de área que muestra la acumulación de puntos a medida que se suman.",
+            "relevanceScore": 6,
+            "labelColumn": "name",
+            "dataColumn": "points",
+            "chartId": "area",
+            "data": [
+                {
+                    "name": "John",
+                    "points": 20
+                },
+                {
+                    "name": "Smith",
+                    "points": 30
+                },
+                {
+                    "name": "Bryan",
+                    "points": 25
+                },
+                {
+                    "name": "Chris",
+                    "points": 35
+                },
+                {
+                    "name": "David",
+                    "points": 40
+                },
+                {
+                    "name": "Edward",
+                    "points": 45
+                },
+                {
+                    "name": "Frank",
+                    "points": 50
+                },
+                {
+                    "name": "George",
+                    "points": 55
+                },
+                {
+                    "name": "Henry",
+                    "points": 60
+                },
+                {
+                    "name": "Ian",
+                    "points": 65
+                },
+                {
+                    "name": "Jack",
+                    "points": 70
+                },
+                {
+                    "name": "Kevin",
+                    "points": 75
+                },
+                {
+                    "name": "Luke",
+                    "points": 80
+                },
+                {
+                    "name": "Michael",
+                    "points": 85
+                },
+                {
+                    "name": "Nick",
+                    "points": 90
+                },
+                {
+                    "name": "Oscar",
+                    "points": 95
+                },
+                {
+                    "name": "Peter",
+                    "points": 100
+                },
+                {
+                    "name": "Quentin",
+                    "points": 105
+                }
+            ]
+        }
+    ]
+}

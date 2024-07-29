@@ -1,8 +1,9 @@
-// import LocalExamplesGrid from "@/components/local-examples-grid";
-// import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
-import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import LocalExampleCard from "@/examples/components/local-example-card";
+import { LOCAL_EXAMPLES } from "@/examples/constants";
 import Link from "next/link";
+import { IoArrowBack } from "react-icons/io5";
 
 export const metadata = {
   title: "Examples",
@@ -16,37 +17,40 @@ export default function ExamplesPage() {
     "/images/cat-working.webp",
   ];
   const image = images[Math.floor(Math.random() * images.length)];
+
   return (
     <main className="max-w-5xl mx-auto px-2 md:px-0 flex-1 w-full mt-12">
-      <div className="flex flex-col items-center gap-5">
-        <h1 className="text-5xl">Página en construcción 👷</h1>
-        <h2 className="text-lg opacity-50">
-          Click{" "}
-          <Link className="hover:text-blue-300 underline" href="/">
-            AQUI
-          </Link>{" "}
-          para volver al inicio
-        </h2>
-        <Image
-          src={image}
-          alt="Página en construcción"
-          width={450}
-          height={450}
-        />
-      </div>
-      {/* <h1 className="text-2xl">Examples</h1>
+      <Link href="/">
+        <Button className="-ml-4" variant="ghost">
+          <IoArrowBack className="mr-2" />
+          Ir a Inicio
+        </Button>
+      </Link>
+      <h1 className="text-2xl">Ejemplos</h1>
       <h2 className="text-lg opacity-50">
-        Check out the metrics and charts generated from the community and from
-        us
+        Métricas y gráficos generados por la comunidad y por nosotros
       </h2>
       <Tabs defaultValue="from-us" className="mt-5">
         <TabsList>
-          <TabsTrigger value="from-community">From the Community</TabsTrigger>
-          <TabsTrigger value="from-us">From us</TabsTrigger>
+          <TabsTrigger value="from-community">De la comunidad</TabsTrigger>
+          <TabsTrigger value="from-us">De nosotros</TabsTrigger>
         </TabsList>
-        <TabsContent value="from-community"></TabsContent>
-        <TabsContent value="from-us"></TabsContent>
-      </Tabs> */}
+        <TabsContent value="from-community">
+          {/* list of <CommunityExampleCard></CommunityExampleCard> */}
+          <div className="w-full flex flex-col items-center">
+            En construcción
+            {/* Reminder: using <img> to avoid Vercel's Data Transfer */}
+            <img src={image} alt="En construcción" />
+          </div>
+        </TabsContent>
+        <TabsContent value="from-us">
+          <div className="w-full grid grid-cols-2 md:grid-cols-3">
+            {Object.entries(LOCAL_EXAMPLES).map(([key, value]) => (
+              <LocalExampleCard key={key} example={value} />
+            ))}
+          </div>
+        </TabsContent>
+      </Tabs>
     </main>
   );
 }
