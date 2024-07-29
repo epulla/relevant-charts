@@ -1,12 +1,5 @@
 import { create } from "zustand";
-
-export type MetricResponse = {
-  name: string;
-  columnTarget: string;
-  strategy: string;
-  unit: string;
-  relevanceScore: number;
-};
+import { MetricResponse } from "./types";
 
 export type State = {
   metricsResponses: MetricResponse[];
