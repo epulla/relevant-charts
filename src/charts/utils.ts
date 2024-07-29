@@ -6,7 +6,13 @@ import { ChartProps } from "./types";
 
 export const SUPPORTED_CHARTS_WITH_STRATEGIES: {
   [id: string]: {
-    component: ({ chartResponse }: ChartProps) => JSX.Element;
+    component: ({
+      title,
+      description,
+      labelColumn,
+      dataColumn,
+      processedData,
+    }: ChartProps) => JSX.Element;
     strategies: string[];
   };
 } = {

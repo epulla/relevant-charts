@@ -1,7 +1,7 @@
 import { promises as fs } from "fs";
 import { SUPPORTED_CHARTS_WITH_STRATEGIES } from "@/charts/utils";
 import { ChartResponse } from "@/charts/store";
-import { MetricResponse } from "@/metrics/store";
+import { MetricResponse } from "@/metrics/types";
 import { LocalExample } from "@/local-examples/types";
 
 interface Props {
