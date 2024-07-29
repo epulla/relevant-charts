@@ -21,9 +21,11 @@ import { MAX_RECORDS_TO_CONSIDER_FOR_AI } from "@/lib/constants";
 import { ConfirmationModal } from "@/components/confirmation-modal";
 import TooltipWrapper from "@/components/tooltip-wrapper";
 import { getAiResponse } from "../actions";
-import { Suspense, useEffect } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { SUPPORTED_METRIC_STRATEGIES } from "@/metrics/utils";
+import { MetricProcessedData } from "@/metrics/types";
+import { ChartProcessedData } from "@/charts/types";
 
 function ReloadChecker() {
   const searchParams = useSearchParams();
@@ -43,10 +45,12 @@ function ReloadChecker() {
   return null;
 }
 
+// Reminder: Done like this to avoid re-rendering the whole page
+const metricsProcessedData: MetricProcessedData[] = [];
+const chartsProcessedData: ChartProcessedData[] = [];
+
 export default function ProcessedPage() {
   const router = useRouter();
-
-  const { toast } = useToast();
 
   const { metricsResponses, setMetricsResponse } = useMetricsStore();
   const { chartsResponses, setChartsResponse } = useChartsStore();
@@ -147,8 +151,8 @@ export default function ProcessedPage() {
               onClick={() => {
                 const data = {
                   aiContext,
-                  metricsResponses,
-                  chartsResponses,
+                  metrics: metricsProcessedData,
+                  charts: chartsProcessedData,
                 };
                 const blob = new Blob([JSON.stringify(data, null, 2)], {
                   type: "application/json",
@@ -165,15 +169,21 @@ export default function ProcessedPage() {
         <div className="flex flex-col md:flex-row">
           <div className="flex flex-col md:w-64">
             {metricsResponses.map((metricResponse) => {
-              const metric = SUPPORTED_METRIC_STRATEGIES[
-                metricResponse.strategy
-              ](
+              const strategyFunction =
+                SUPPORTED_METRIC_STRATEGIES[metricResponse.strategy];
+              const metric = strategyFunction(
                 dataObject.map((row) => {
                   const value = row[metricResponse.columnTarget];
                   if (value === undefined || isNaN(value)) return 0;
                   return parseFloat(value);
                 })
               );
+              metricsProcessedData.push({
+                name: metricResponse.name,
+                unit: metricResponse.unit,
+                relevanceScore: metricResponse.relevanceScore,
+                data: metric,
+              });
               return (
                 <MetricCard
                   key={metricResponse.name}
@@ -194,7 +204,12 @@ export default function ProcessedPage() {
                 chartResponse.labelColumn,
                 chartResponse.dataColumn
               );
-
+              chartsProcessedData.push({
+                title: chartResponse.title,
+                description: chartResponse.description,
+                relevanceScore: chartResponse.relevanceScore,
+                data: processedData,
+              });
               const ChartComponent =
                 SUPPORTED_CHARTS_WITH_STRATEGIES[chartResponse.id].component;
               return (
@@ -221,6 +236,12 @@ export default function ProcessedPage() {
               chartResponse.labelColumn,
               chartResponse.dataColumn
             );
+            chartsProcessedData.push({
+              title: chartResponse.title,
+              description: chartResponse.description,
+              relevanceScore: chartResponse.relevanceScore,
+              data: processedData,
+            });
             return (
               <ChartComponent
                 key={`${chartResponse.id}-${i}`}
