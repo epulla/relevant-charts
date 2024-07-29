@@ -2,7 +2,7 @@ import { create } from "zustand";
 
 // comes from src/lib/ai.ts
 export type ChartResponse = {
-  id: string;
+  chartId: string;
   title: string;
   description: string;
   labelColumn: string;

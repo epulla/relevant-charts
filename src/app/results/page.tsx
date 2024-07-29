@@ -217,6 +217,9 @@ export default function ProcessedPage() {
                   title: chartResponse.title,
                   description: chartResponse.description,
                   relevanceScore: chartResponse.relevanceScore,
+                  labelColumn: chartResponse.labelColumn,
+                  dataColumn: chartResponse.dataColumn,
+                  chartId: chartResponse.chartId,
                   data: processedData,
                 });
               }
@@ -255,6 +258,9 @@ export default function ProcessedPage() {
                 title: chartResponse.title,
                 description: chartResponse.description,
                 relevanceScore: chartResponse.relevanceScore,
+                labelColumn: chartResponse.labelColumn,
+                dataColumn: chartResponse.dataColumn,
+                chartId: chartResponse.chartId,
                 data: processedData,
               });
             }

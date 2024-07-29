@@ -10,5 +10,8 @@ export type ChartProcessedData = {
   title: string;
   description: string;
   relevanceScore: number;
+  labelColumn: string;
+  dataColumn: string;
+  chartId: string;
   data: any[];
 };
