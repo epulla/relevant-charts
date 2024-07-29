@@ -8,43 +8,34 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { getRandomColor } from "@/lib/utils";
 import { ChartProps } from "../types";
 import { ShadcnChartTemplate } from "./chart-template";
-import { useGeneralStore } from "@/lib/store";
-import { SUPPORTED_CHARTS_STRATEGIES } from "../utils";
 
 const chartConfig = {} satisfies ChartConfig;
 
-export function ShadcnBarChart({ chartResponse }: ChartProps) {
-  const [processedData, setProcessedData] = useState<any[]>([]);
-  const { dataObject } = useGeneralStore();
+export function ShadcnBarChart({
+  title,
+  description,
+  labelColumn,
+  dataColumn,
+  processedData,
+}: ChartProps) {
   const randomColor = useMemo(() => getRandomColor(), []);
 
-  useEffect(() => {
-    const strategyFunction =
-      SUPPORTED_CHARTS_STRATEGIES[chartResponse.strategy];
-    setProcessedData(
-      strategyFunction(
-        dataObject,
-        chartResponse.labelColumn,
-        chartResponse.dataColumn
-      )
-    );
-  }, [chartResponse, dataObject]);
 
   return (
     <ShadcnChartTemplate
-      title={chartResponse.title}
-      description={chartResponse.description}
+      title={title}
+      description={description}
       processedData={processedData}
     >
       <ChartContainer config={chartConfig}>
         <BarChart accessibilityLayer data={processedData}>
           <CartesianGrid vertical={false} />
           <XAxis
-            dataKey={chartResponse.labelColumn}
+            dataKey={labelColumn}
             tickLine={false}
             tickMargin={10}
             axisLine={false}
@@ -54,7 +45,7 @@ export function ShadcnBarChart({ chartResponse }: ChartProps) {
             cursor={false}
             content={<ChartTooltipContent indicator="dashed" />}
           />
-          <Bar dataKey={chartResponse.dataColumn} fill={randomColor} />
+          <Bar dataKey={dataColumn} fill={randomColor} />
         </BarChart>
       </ChartContainer>
     </ShadcnChartTemplate>

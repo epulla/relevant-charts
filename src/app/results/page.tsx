@@ -2,7 +2,10 @@
 import MetricCard from "@/metrics/components/metric-card";
 import { useMetricsStore } from "@/metrics/store";
 import { useChartsStore } from "@/charts/store";
-import { SUPPORTED_CHARTS_WITH_STRATEGIES } from "@/charts/utils";
+import {
+  SUPPORTED_CHARTS_STRATEGIES,
+  SUPPORTED_CHARTS_WITH_STRATEGIES,
+} from "@/charts/utils";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { IoArrowBack, IoDownload, IoRefresh } from "react-icons/io5";
@@ -162,36 +165,70 @@ export default function ProcessedPage() {
         <div className="flex flex-col md:flex-row">
           <div className="flex flex-col md:w-64">
             {metricsResponses.map((metricResponse) => {
-              const metric = SUPPORTED_METRIC_STRATEGIES[metricResponse.strategy](
+              const metric = SUPPORTED_METRIC_STRATEGIES[
+                metricResponse.strategy
+              ](
                 dataObject.map((row) => {
                   const value = row[metricResponse.columnTarget];
                   if (value === undefined || isNaN(value)) return 0;
                   return parseFloat(value);
                 })
               );
-              return <MetricCard
-                key={metricResponse.name}
-                name={metricResponse.name}
-                metric={metric}
-                unit={metricResponse.unit}
-              />
-            }
-            )}
+              return (
+                <MetricCard
+                  key={metricResponse.name}
+                  name={metricResponse.name}
+                  metric={metric}
+                  unit={metricResponse.unit}
+                />
+              );
+            })}
           </div>
           <div className="flex-1">
-            {SUPPORTED_CHARTS_WITH_STRATEGIES[chartsResponses[0].id].component({
-              chartResponse: chartsResponses[0],
-            })}
+            {(() => {
+              const chartResponse = chartsResponses[0];
+              const strategyFunction =
+                SUPPORTED_CHARTS_STRATEGIES[chartResponse.strategy];
+              const processedData = strategyFunction(
+                dataObject,
+                chartResponse.labelColumn,
+                chartResponse.dataColumn
+              );
+
+              const ChartComponent =
+                SUPPORTED_CHARTS_WITH_STRATEGIES[chartResponse.id].component;
+              return (
+                <ChartComponent
+                  key={`${chartResponse.id}-0`}
+                  title={chartResponse.title}
+                  description={chartResponse.description}
+                  labelColumn={chartResponse.labelColumn}
+                  dataColumn={chartResponse.dataColumn}
+                  processedData={processedData}
+                />
+              );
+            })()}
           </div>
         </div>
         <div className="flex flex-col md:grid md:grid-cols-3">
           {chartsResponses.slice(1).map((chartResponse, i) => {
             const ChartComponent =
               SUPPORTED_CHARTS_WITH_STRATEGIES[chartResponse.id].component;
+            const strategyFunction =
+              SUPPORTED_CHARTS_STRATEGIES[chartResponse.strategy];
+            const processedData = strategyFunction(
+              dataObject,
+              chartResponse.labelColumn,
+              chartResponse.dataColumn
+            );
             return (
               <ChartComponent
                 key={`${chartResponse.id}-${i}`}
-                chartResponse={chartResponse}
+                title={chartResponse.title}
+                description={chartResponse.description}
+                labelColumn={chartResponse.labelColumn}
+                dataColumn={chartResponse.dataColumn}
+                processedData={processedData}
               />
             );
           })}

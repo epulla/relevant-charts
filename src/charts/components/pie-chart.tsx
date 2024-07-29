@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
 import { Cell, Pie, PieChart } from "recharts";
 
 import {
@@ -12,8 +11,6 @@ import {
 import { ChartProps } from "../types";
 import { getRandomColor } from "@/lib/utils";
 import { ShadcnChartTemplate } from "./chart-template";
-import { SUPPORTED_CHARTS_STRATEGIES } from "../utils";
-import { useGeneralStore } from "@/lib/store";
 
 const chartConfig = {
   name: {
@@ -21,25 +18,17 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function ShadcnPieChart({ chartResponse }: ChartProps) {
-  const [processedData, setProcessedData] = useState<any[]>([]);
-  const { dataObject } = useGeneralStore();
-
-  useEffect(() => {
-    const strategyFunction =
-      SUPPORTED_CHARTS_STRATEGIES[chartResponse.strategy];
-    setProcessedData(
-      strategyFunction(
-        dataObject,
-        chartResponse.labelColumn,
-        chartResponse.dataColumn
-      )
-    );
-  }, [chartResponse, dataObject]);
+export function ShadcnPieChart({
+  title,
+  description,
+  labelColumn,
+  dataColumn,
+  processedData,
+}: ChartProps) {
   return (
     <ShadcnChartTemplate
-      title={chartResponse.title}
-      description={chartResponse.description}
+      title={title}
+      description={description}
       processedData={processedData}
     >
       <ChartContainer
@@ -53,8 +42,8 @@ export function ShadcnPieChart({ chartResponse }: ChartProps) {
           />
           <Pie
             data={processedData}
-            dataKey={"points"}
-            nameKey={"name"}
+            dataKey={dataColumn}
+            nameKey={labelColumn}
             innerRadius={60}
             strokeWidth={5}
           >

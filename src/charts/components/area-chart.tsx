@@ -11,33 +11,23 @@ import {
 import { ChartProps } from "../types";
 import { getRandomColor } from "@/lib/utils";
 import { ShadcnChartTemplate } from "./chart-template";
-import { useGeneralStore } from "@/lib/store";
-import { useEffect, useMemo, useState } from "react";
-import { SUPPORTED_CHARTS_STRATEGIES } from "../utils";
+import { useMemo } from "react";
 
 const chartConfig = {} satisfies ChartConfig;
 
-export function ShadcnAreaChart({ chartResponse }: ChartProps) {
-  const [processedData, setProcessedData] = useState<any[]>([]);
-
+export function ShadcnAreaChart({
+  title,
+  description,
+  labelColumn,
+  dataColumn,
+  processedData,
+}: ChartProps) {
   const randomColor = useMemo(() => getRandomColor(), []);
-  const { dataObject } = useGeneralStore();
 
-  useEffect(() => {
-    const strategyFunction =
-      SUPPORTED_CHARTS_STRATEGIES[chartResponse.strategy];
-    setProcessedData(
-      strategyFunction(
-        dataObject,
-        chartResponse.labelColumn,
-        chartResponse.dataColumn
-      )
-    );
-  }, [chartResponse, dataObject]);
   return (
     <ShadcnChartTemplate
-      title={chartResponse.title}
-      description={chartResponse.description}
+      title={title}
+      description={description}
       processedData={processedData}
     >
       <ChartContainer config={chartConfig}>
@@ -51,7 +41,7 @@ export function ShadcnAreaChart({ chartResponse }: ChartProps) {
         >
           <CartesianGrid vertical={false} />
           <XAxis
-            dataKey={chartResponse.labelColumn}
+            dataKey={labelColumn}
             tickLine={false}
             tickMargin={10}
             axisLine={false}
@@ -62,7 +52,7 @@ export function ShadcnAreaChart({ chartResponse }: ChartProps) {
             content={<ChartTooltipContent indicator="dot" />}
           />
           <Area
-            dataKey={chartResponse.dataColumn}
+            dataKey={dataColumn}
             type="natural"
             fill={randomColor}
             fillOpacity={0.4}
