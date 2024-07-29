@@ -45,7 +45,7 @@ function ReloadChecker() {
   return null;
 }
 
-// Reminder: Done like this to avoid re-rendering the whole page
+// IMPORTANT: Done like this to avoid re-rendering the whole page
 const metricsProcessedData: MetricProcessedData[] = [];
 const chartsProcessedData: ChartProcessedData[] = [];
 
@@ -178,12 +178,17 @@ export default function ProcessedPage() {
                   return parseFloat(value);
                 })
               );
-              metricsProcessedData.push({
-                name: metricResponse.name,
-                unit: metricResponse.unit,
-                relevanceScore: metricResponse.relevanceScore,
-                data: metric,
-              });
+              const alreadyExists = metricsProcessedData.some(
+                (m) => m.name === metricResponse.name
+              );
+              if (!alreadyExists) {
+                metricsProcessedData.push({
+                  name: metricResponse.name,
+                  unit: metricResponse.unit,
+                  relevanceScore: metricResponse.relevanceScore,
+                  data: metric,
+                });
+              }
               return (
                 <MetricCard
                   key={metricResponse.name}
@@ -204,17 +209,23 @@ export default function ProcessedPage() {
                 chartResponse.labelColumn,
                 chartResponse.dataColumn
               );
-              chartsProcessedData.push({
-                title: chartResponse.title,
-                description: chartResponse.description,
-                relevanceScore: chartResponse.relevanceScore,
-                data: processedData,
-              });
+              const alreadyExists = chartsProcessedData.some(
+                (m) => m.title === chartResponse.title
+              );
+              if (!alreadyExists) {
+                chartsProcessedData.push({
+                  title: chartResponse.title,
+                  description: chartResponse.description,
+                  relevanceScore: chartResponse.relevanceScore,
+                  data: processedData,
+                });
+              }
               const ChartComponent =
-                SUPPORTED_CHARTS_WITH_STRATEGIES[chartResponse.id].component;
+                SUPPORTED_CHARTS_WITH_STRATEGIES[chartResponse.chartId]
+                  .component;
               return (
                 <ChartComponent
-                  key={`${chartResponse.id}-0`}
+                  key={`${chartResponse.chartId}-0`}
                   title={chartResponse.title}
                   description={chartResponse.description}
                   labelColumn={chartResponse.labelColumn}
@@ -228,7 +239,7 @@ export default function ProcessedPage() {
         <div className="flex flex-col md:grid md:grid-cols-3">
           {chartsResponses.slice(1).map((chartResponse, i) => {
             const ChartComponent =
-              SUPPORTED_CHARTS_WITH_STRATEGIES[chartResponse.id].component;
+              SUPPORTED_CHARTS_WITH_STRATEGIES[chartResponse.chartId].component;
             const strategyFunction =
               SUPPORTED_CHARTS_STRATEGIES[chartResponse.strategy];
             const processedData = strategyFunction(
@@ -236,15 +247,20 @@ export default function ProcessedPage() {
               chartResponse.labelColumn,
               chartResponse.dataColumn
             );
-            chartsProcessedData.push({
-              title: chartResponse.title,
-              description: chartResponse.description,
-              relevanceScore: chartResponse.relevanceScore,
-              data: processedData,
-            });
+            const alreadyExists = chartsProcessedData.some(
+              (m) => m.title === chartResponse.title
+            );
+            if (!alreadyExists) {
+              chartsProcessedData.push({
+                title: chartResponse.title,
+                description: chartResponse.description,
+                relevanceScore: chartResponse.relevanceScore,
+                data: processedData,
+              });
+            }
             return (
               <ChartComponent
-                key={`${chartResponse.id}-${i}`}
+                key={`${chartResponse.chartId}-${i}`}
                 title={chartResponse.title}
                 description={chartResponse.description}
                 labelColumn={chartResponse.labelColumn}
