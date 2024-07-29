@@ -34,12 +34,12 @@ export const AiResponse = z.object({
   ),
   charts: z.array(
     z.object({
-      id: z
+      chartId: z
         .string()
         .describe(
           `Id del gráfico estadístico de la lista ${Object.keys(
             SUPPORTED_CHARTS_WITH_STRATEGIES
-          )}`
+          )} (se puede repetir)`
         ),
       title: z.string().describe("Titulo del gráfico"),
       description: z.string().describe("Descripción corta del gráfico"),
