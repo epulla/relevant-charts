@@ -40,7 +40,7 @@ const warnings: Warning[] = [
 export default function Warnings() {
   return (
     <Carousel
-      className="w-full max-w-sm"
+      className="w-full max-w-[17rem] md:max-w-sm"
       opts={{
         align: "start",
         loop: true,
