@@ -6,6 +6,7 @@ import Warnings from "@/components/warnings";
 import Link from "next/link";
 
 import { IoArrowForward } from "react-icons/io5";
+import { getAiResponse } from "./actions";
 
 export const metadata = {
   title: "Relevant Charts",
@@ -24,7 +25,7 @@ export default function Home() {
         </div>
       </h1>
       <div className="flex gap-2 items-center">
-        <FileAnalyzer />
+        <FileAnalyzer getAiResponse={getAiResponse} />
         <Link href="/examples">
           <Button variant="secondary">
             Ver ejemplos

@@ -9,11 +9,16 @@ import { useRouter } from "next/navigation";
 import { useChartsStore } from "@/charts/store";
 import { MAX_RECORDS_TO_CONSIDER_FOR_AI } from "@/lib/constants";
 import { useGeneralStore } from "@/lib/store";
-import { getAiResponse } from "@/app/actions";
 import { useToast } from "./ui/use-toast";
+import { z } from "zod";
+import { AiResponse } from "@/lib/ai";
+
+interface Props {
+  getAiResponse: (data: string) => Promise<z.infer<typeof AiResponse>>;
+}
 
 // reference: https://stackoverflow.com/questions/71991961/how-to-read-content-of-uploaded-json-file-on-react-next-js
-export default function FileAnalyzer() {
+export default function FileAnalyzer({ getAiResponse }: Props) {
   const [fileContent, setFileContent] = useState<string>("");
   const [done, setDone] = useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -82,6 +87,7 @@ export default function FileAnalyzer() {
     setChartsResponse,
     setIsAiResultLoading,
     toast,
+    getAiResponse,
   ]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
