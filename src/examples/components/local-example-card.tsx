@@ -19,7 +19,7 @@ export default function LocalExampleCard({ example }: Props) {
     <Link href={`/examples/us/${example.id}`}>
       <Card>
         <CardHeader>
-          <CardTitle>{example.name}</CardTitle>
+          <CardTitle>{example.title}</CardTitle>
           <CardDescription>
             Autor: {example.author}
             <br />
@@ -27,7 +27,7 @@ export default function LocalExampleCard({ example }: Props) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <img src={example.cover} alt={example.name} />
+          <img src={example.cover} alt={example.title} />
         </CardContent>
         <CardFooter className="flex justify-between"></CardFooter>
       </Card>

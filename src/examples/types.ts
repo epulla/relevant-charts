@@ -4,7 +4,7 @@ import { MetricProcessedData } from "@/metrics/types";
 export interface Example {
   id: string;
   author: string;
-  name: string;
+  title: string;
   createdAt: string;
   data: string;
   cover: string;

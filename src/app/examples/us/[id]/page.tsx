@@ -33,7 +33,7 @@ export default async function ExamplePage({ params }: Props) {
           Ir a ejemplos
         </Button>
       </Link>
-      <h1 className="text-sm text-primary opacity-50">Resultados</h1>
+      <h1 className="text-4xl text-primary">{example.title}</h1>
       <Accordion type="single" collapsible className="w-full">
         <AccordionItem value="item-1">
           <AccordionTrigger>Contexto:</AccordionTrigger>
@@ -52,7 +52,7 @@ export default async function ExamplePage({ params }: Props) {
           <DownloadJsonButton
             tooltip="Descargar los datos procesados en .json"
             data={data}
-            filename={example.name}
+            filename={example.title}
           ></DownloadJsonButton>
         </div>
         <div className="flex flex-col md:flex-row">
