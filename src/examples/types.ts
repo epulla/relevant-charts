@@ -6,8 +6,8 @@ export interface Example {
   author: string;
   title: string;
   createdAt: string;
-  data: string;
-  cover: string;
+  dataUrl: string;
+  coverUrl: string;
 }
 
 export interface ExampleData {

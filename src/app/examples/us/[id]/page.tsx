@@ -13,15 +13,19 @@ import { IoArrowBack } from "react-icons/io5";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import DownloadJsonButton from "@/components/download-json-button";
+import { notFound } from "next/navigation";
 
 interface Props {
   params: { id: string };
 }
 
-export default async function ExamplePage({ params }: Props) {
+export default async function LocalExamplePage({ params }: Props) {
+  if (!params.id || !LOCAL_EXAMPLES[params.id]) {
+    return notFound();
+  }
   const example = LOCAL_EXAMPLES[params.id];
   const file = await fs.readFile(
-    `${process.cwd()}/public/${example.data}`,
+    `${process.cwd()}/public/${example.dataUrl}`,
     "utf8"
   );
   const data: ExampleData = JSON.parse(file);
