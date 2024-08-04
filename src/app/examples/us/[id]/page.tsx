@@ -30,7 +30,7 @@ export default async function LocalExamplePage({ params }: Props) {
   );
   const data: ExampleData = JSON.parse(file);
   return (
-    <main className="max-w-5xl mx-auto px-2 md:px-0 flex-1 w-full mt-12">
+    <>
       <Link href="/examples">
         <Button className="-ml-4" variant="ghost">
           <IoArrowBack className="mr-2" />
@@ -105,6 +105,6 @@ export default async function LocalExamplePage({ params }: Props) {
           })}
         </div>
       </div>
-    </main>
+    </>
   );
 }
