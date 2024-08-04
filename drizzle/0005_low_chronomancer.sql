@@ -1,0 +1,1 @@
+ALTER TABLE "examples" ALTER COLUMN "cover_url" SET DEFAULT '';--> statement-breakpoint
