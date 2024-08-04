@@ -94,3 +94,12 @@ export const downloadFile = (filename: string, data: Blob) => {
   a.click();
   URL.revokeObjectURL(url);
 };
+
+export async function dataUrlToImageFile(
+  dataUrl: string,
+  fileName: string,
+): Promise<File> {
+  const res: Response = await fetch(dataUrl);
+  const blob: Blob = await res.blob();
+  return new File([blob], fileName, { type: "image/png" });
+}

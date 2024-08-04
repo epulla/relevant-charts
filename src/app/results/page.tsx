@@ -8,7 +8,7 @@ import {
 } from "@/charts/utils";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { IoArrowBack, IoDownload, IoRefresh } from "react-icons/io5";
+import { IoArrowBack, IoDownload, IoPeople, IoRefresh } from "react-icons/io5";
 import { useGeneralStore } from "@/lib/store";
 import {
   Accordion,
@@ -26,6 +26,8 @@ import { useToast } from "@/components/ui/use-toast";
 import { SUPPORTED_METRIC_STRATEGIES } from "@/metrics/utils";
 import { MetricProcessedData } from "@/metrics/types";
 import { ChartProcessedData } from "@/charts/types";
+import CommunitySaveModal from "../../components/community-save-modal";
+import html2canvas from "html2canvas";
 
 function ReloadChecker() {
   const searchParams = useSearchParams();
@@ -50,6 +52,9 @@ const metricsProcessedData: MetricProcessedData[] = [];
 const chartsProcessedData: ChartProcessedData[] = [];
 
 export default function ProcessedPage() {
+  const [openCommunitySaveModal, setOpenCommunitySaveModal] = useState(false);
+  const [coverImageUrl, setCoverImageUrl] = useState<string>("");
+
   const router = useRouter();
 
   const { metricsResponses, setMetricsResponse } = useMetricsStore();
@@ -82,6 +87,16 @@ export default function ProcessedPage() {
             Ir a inicio
           </Button>
         }
+      />
+      <CommunitySaveModal
+        open={openCommunitySaveModal}
+        onOpenChange={setOpenCommunitySaveModal}
+        coverImageUrl={coverImageUrl}
+        data={{
+          aiContext,
+          metrics: metricsProcessedData,
+          charts: chartsProcessedData,
+        }}
       />
       <h1 className="text-sm text-primary opacity-50">Resultados</h1>
       <Accordion type="single" collapsible className="w-full">
@@ -143,6 +158,37 @@ export default function ProcessedPage() {
               />
             </Button>
           </TooltipWrapper>
+          <TooltipWrapper tooltip="Compartir con la comunidad">
+            <Button
+              variant="outline"
+              size="sm"
+              className="rounded"
+              onClick={async () => {
+                setOpenCommunitySaveModal(true);
+                if (coverImageUrl) return;
+                const mobileLayoutActive = window.innerWidth < 768;
+                const $results = document.getElementById("results")!;
+                const $mainResults = document.getElementById("main-results")!;
+                $mainResults.style.background = "#000";
+                if (mobileLayoutActive) {
+                  $results.style.overflow = "hidden";
+                  $mainResults.style.flexDirection = "row";
+                  $mainResults.style.width = "1024px";
+                  await new Promise((resolve) => setTimeout(resolve, 500));
+                }
+                const canvas = await html2canvas($mainResults);
+                $mainResults.style.background = "";
+                if (mobileLayoutActive) {
+                  $results.style.overflow = "";
+                  $mainResults.style.flexDirection = "";
+                  $mainResults.style.width = "";
+                }
+                setCoverImageUrl(canvas.toDataURL());
+              }}
+            >
+              <IoPeople />
+            </Button>
+          </TooltipWrapper>
           <TooltipWrapper tooltip="Descargar datos procesados en .json">
             <Button
               variant="outline"
@@ -165,8 +211,8 @@ export default function ProcessedPage() {
           </TooltipWrapper>
         </div>
       </div>
-      <div className="flex flex-col">
-        <div className="flex flex-col md:flex-row">
+      <div className="flex flex-col" id="results">
+        <div className="flex flex-col md:flex-row" id="main-results">
           <div className="flex flex-col md:w-64">
             {metricsResponses.map((metricResponse) => {
               const strategyFunction =

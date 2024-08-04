@@ -27,7 +27,7 @@ export function ShadcnChartTemplate({
   children,
 }: Props) {
   return (
-    <Card>
+    <Card className="h-full">
       <CardHeader>
         <div className="flex w-full justify-between items-center">
           <CardTitle>{title}</CardTitle>
