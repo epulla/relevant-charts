@@ -1,7 +1,7 @@
-import { Example } from "./types";
+import { LocalExample } from "./types";
 
 // id is the key of the example
-export const LOCAL_EXAMPLES: Record<string, Example> = {
+export const LOCAL_EXAMPLES: Record<string, LocalExample> = {
   "1": {
     id: "1",
     author: "System",

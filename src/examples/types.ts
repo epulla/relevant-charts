@@ -1,13 +1,13 @@
 import { ChartProcessedData } from "@/charts/types";
 import { MetricProcessedData } from "@/metrics/types";
 
-export interface Example {
+export interface LocalExample {
   id: string;
   author: string;
   title: string;
   createdAt: string;
-  dataUrl: string;
   coverUrl: string;
+  dataUrl: string;
 }
 
 export interface ExampleData {
