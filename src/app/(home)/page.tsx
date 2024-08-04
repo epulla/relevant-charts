@@ -6,7 +6,7 @@ import Warnings from "@/components/warnings";
 import Link from "next/link";
 
 import { IoArrowForward } from "react-icons/io5";
-import { getAiResponse } from "./actions";
+import { getAiResponse } from "../actions";
 
 export const metadata = {
   title: "Relevant Charts",
@@ -15,7 +15,7 @@ export const metadata = {
 
 export default function Home() {
   return (
-    <main className="max-w-5xl mx-auto px-2 md:px-0 flex-1 w-full flex flex-col items-center justify-center gap-8">
+    <>
       <h1 className="text-5xl md:text-7xl text-center text-primary font-bold">
         <div className="inline-grid">
           {/* <span className="mr-2 col-start-1 row-start-1 bg-gradient-to-r from-pink-500 to-yellow-500 blur-xl"></span> */}
@@ -35,6 +35,6 @@ export default function Home() {
       </div>
       <Loader />
       <Warnings />
-    </main>
+    </>
   );
 }
