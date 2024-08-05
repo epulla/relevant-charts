@@ -18,6 +18,7 @@ import { IoReload } from "react-icons/io5";
 import { useToast } from "./ui/use-toast";
 import { ToastAction } from "./ui/toast";
 import Link from "next/link";
+import { saveUserData } from "@/app/results/actions";
 
 interface Props {
   open: boolean;
@@ -34,7 +35,6 @@ export default function CommunitySaveModal({
 }: Props) {
   const [keepAnonymous, setKeepAnonymous] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
 
   const { toast } = useToast();
 
@@ -61,12 +61,11 @@ export default function CommunitySaveModal({
           action={async (formData: FormData) => {
             formData.set("isAnonymous", keepAnonymous.toString());
             formData.set("coverImageUrl", coverImageUrl);
-            // await saveUserData(formData, data);
-            await new Promise((resolve) => setTimeout(resolve, 2000));
-            const id = Math.random().toString(36).slice(2, 10);
+            const id = await saveUserData(formData, data);
             toast({
               title: "Éxito!",
-              description: "Ocurrió un error al recibir la respuesta de la IA",
+              description:
+                "Haz click en Ver para ver tu Dashboard en la comunidad",
               action: (
                 <Link href={`/examples/community/${id}`}>
                   <ToastAction altText="Ver">Ver</ToastAction>
