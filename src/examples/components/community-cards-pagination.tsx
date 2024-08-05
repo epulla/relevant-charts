@@ -57,7 +57,7 @@ export default function CommunityCardsPagination() {
           <CardsGridSkeleton />
         )}
       </div>
-      <Pagination>
+      <Pagination className="mt-2">
         <PaginationContent>
           {page > 1 && (
             <PaginationItem>
