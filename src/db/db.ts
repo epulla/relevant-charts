@@ -4,7 +4,7 @@ import { sql } from "@vercel/postgres";
 import { kv } from "@vercel/kv";
 import { put } from "@vercel/blob";
 import { examplesTable, SelectExample, InsertExample } from "./schema";
-import { desc, eq } from "drizzle-orm";
+import { count, desc, eq } from "drizzle-orm";
 import { randomUUID } from "node:crypto";
 import { dataUrlToImageFile } from "@/lib/utils";
 
@@ -49,4 +49,8 @@ export const createExample = async (
     .values(dataToInsert)
     .returning({ insertedId: examplesTable.id });
   return id;
+};
+
+export const getTotalExamples = async () => {
+  return db.select({ count: count() }).from(examplesTable);
 };
