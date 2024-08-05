@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import CommunityCardsPagination from "@/examples/components/community-cards-pagination";
 import ExampleCard from "@/examples/components/example-card";
 import { LOCAL_EXAMPLES } from "@/examples/constants";
 import Link from "next/link";
@@ -10,14 +11,7 @@ export const metadata = {
   description: "Metrics and Charts generated from the community and from us",
 };
 
-export default function ExamplesPage() {
-  const images = [
-    "/images/holup.webp",
-    "/images/bongo-moth.webp",
-    "/images/cat-working.webp",
-  ];
-  const image = images[Math.floor(Math.random() * images.length)];
-
+export default async function ExamplesPage() {
   return (
     <>
       <Link href="/">
@@ -30,23 +24,22 @@ export default function ExamplesPage() {
       <h2 className="text-lg opacity-50">
         Métricas y gráficos generados por la comunidad y por nosotros
       </h2>
-      <Tabs defaultValue="from-us" className="mt-5">
+      <Tabs defaultValue="from-community" className="mt-5">
         <TabsList>
           <TabsTrigger value="from-community">De la comunidad</TabsTrigger>
           <TabsTrigger value="from-us">De nosotros</TabsTrigger>
         </TabsList>
         <TabsContent value="from-community">
-          {/* list of <CommunityExampleCard></CommunityExampleCard> */}
-          <div className="w-full flex flex-col items-center">
-            En construcción
-            {/* Reminder: using <img> to avoid Vercel's Data Transfer */}
-            <img src={image} alt="En construcción" />
-          </div>
+          <CommunityCardsPagination />
         </TabsContent>
         <TabsContent value="from-us">
           <div className="w-full grid grid-cols-2 md:grid-cols-3">
             {Object.entries(LOCAL_EXAMPLES).map(([key, value]) => (
-              <ExampleCard key={key} example={value} />
+              <ExampleCard
+                key={key}
+                example={value}
+                href={`/examples/us/${value.id}`}
+              />
             ))}
           </div>
         </TabsContent>

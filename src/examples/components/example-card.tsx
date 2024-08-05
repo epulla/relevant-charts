@@ -6,17 +6,18 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { LocalExample } from "../types";
+import { Example } from "../types";
 
 import Link from "next/link";
 
 interface Props {
-  example: LocalExample;
+  example: Example;
+  href: string;
 }
 
-export default function ExampleCard({ example }: Props) {
+export default function ExampleCard({ example, href }: Props) {
   return (
-    <Link href={`/examples/us/${example.id}`}>
+    <Link href={href}>
       <Card>
         <CardHeader>
           <CardTitle>{example.title}</CardTitle>
